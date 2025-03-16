@@ -1,0 +1,46 @@
+{
+  "cli": {
+    "version": ">= 7.3.0",
+    "promptToConfigurePushNotifications": false,
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "channel": "staging",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_ENV": "staging",
+        "EXPO_PUBLIC_BACKEND_URL": "https://qa."
+      }
+    },
+    "production": {
+      "channel": "main",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_ENV": "production",
+        "EXPO_PUBLIC_BACKEND_URL": "https://prod"
+      }
+    }
+  },
+  "submit": {
+    "preview": {
+      "ios": {
+        "appleId": "nhethanh97@gmail.com",
+        "ascAppId": "6529534382",
+        "appleTeamId": "XA9XQ5C874"
+      }
+    },
+    "production": {
+      "ios": {
+        "appleId": "nhethanh97@gmail.com",
+        "ascAppId": "6479838075",
+        "appleTeamId": "XA9XQ5C874"
+      }
+    }
+  }
+}
