@@ -9,7 +9,7 @@ let Config = {
 // STAGING
 if (Updates.channel === 'staging') {
     Config.EXPO_PUBLIC_ENV = 'staging';
-    Config.EXPO_PUBLIC_BACKEND_URL = 'https://qa';
+    Config.EXPO_PUBLIC_BACKEND_URL = 'http://localhost:5000';
 }
 
 if (Updates.channel === 'main') {

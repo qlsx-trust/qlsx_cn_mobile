@@ -24,10 +24,13 @@ import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } f
 import { useEffect, useState } from 'react';
 
 import { Audio } from 'expo-av';
+import { useAuthContext } from '@/providers/UserProvider';
 
 const HomeScreen = () => {
     const { themeVariables, theme } = useThemeContext();
     const styles = styling(themeVariables);
+
+    const { logout } = useAuthContext();
 
     const [permission, requestPermission] = useCameraPermissions();
     const [showCamera, setShowCamera] = useState(false);
@@ -47,6 +50,10 @@ const HomeScreen = () => {
 
     const handleScanScreen = () => {
         setShowCamera(true);
+    };
+
+    const handleLogout = () => {
+        logout();
     };
 
     function toggleCameraFacing() {
@@ -203,6 +210,13 @@ const HomeScreen = () => {
                                 onPress={handleScanScreen}
                                 viewStyle={{ width: 250, marginTop: 20 }}
                                 variant={BUTTON_COMMON_TYPE.PRIMARY_OUTLINE}
+                            />
+
+                            <AppButton
+                                label="Đăng xuất"
+                                onPress={handleLogout}
+                                viewStyle={{ width: 250, marginTop: 0 }}
+                                variant={BUTTON_COMMON_TYPE.CANCEL}
                             />
 
                             {!permission && (

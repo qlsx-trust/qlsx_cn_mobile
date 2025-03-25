@@ -8,7 +8,8 @@ import 'react-native-reanimated';
 export default function Page() {
     const rootNavigationState = useRootNavigationState();
     const { loading, session } = useAuthContext();
-
+    console.log(session)
+    console.log(loading)
     if (!rootNavigationState?.key) return null;
     if (!loading && session) {
         return <Redirect href={SCREEN_KEY.home} />;

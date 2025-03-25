@@ -12,6 +12,10 @@ export const ZOOM_CONFIG: any = {
     '2': 0.2,
 };
 
+export const TIMEOUT_REQUEST = {
+    NORMAL: 2 * 60 * 1000
+}
+
 export enum OS {
     ANDROID = 'android',
     IOS = 'ios',

@@ -1,4 +1,4 @@
-import { SCREEN_KEY } from '@/constants/common';
+import { SCREEN_KEY, UserRole } from '@/constants/common';
 import { clearSecretStorage, getSecretStorage } from '@/utils/KeychainHelper';
 import { router, usePathname } from 'expo-router';
 import { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -20,17 +20,20 @@ export const AuthContext = createContext<StateType>(initialState);
 
 export interface IUserInfo {
     token: string;
+    refreshToken: string;
+    userName: string;
+    role: UserRole;
+    tokenValidTo: Date;
+    refreshTokenValidTo: Date;
 }
-
-type AuthSession = {};
 
 type StateType = {
     user: IUserInfo | null;
-    session: AuthSession | null;
+    session: IUserInfo | null;
     loading: boolean;
     setUser(user: IUserInfo | null): void;
     logout(): void;
-    setSession(session: AuthSession | null): void;
+    setSession(session: IUserInfo | null): void;
 };
 
 export interface UserProviderProps {
@@ -39,7 +42,7 @@ export interface UserProviderProps {
 
 export const AuthContextProvider = ({ children }: UserProviderProps) => {
     const [user, setUser] = useState<IUserInfo | null>(null);
-    const [session, setSession] = useState<AuthSession | null>(null);
+    const [session, setSession] = useState<IUserInfo | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const pathName = usePathname();
     const appState = useRef(AppState.currentState);
@@ -62,25 +65,6 @@ export const AuthContextProvider = ({ children }: UserProviderProps) => {
         } catch (error) {
             console.log('@@getSessionUserFromStorage Error: ', error);
             setSession(null);
-            setLoading(false);
-        }
-    };
-
-    const getSessionUser = async () => {
-        try {
-            if (!session) return;
-            setLoading(true);
-            // const userProfile = await UserRepository.getProfileInfo();
-
-            // if (!userProfile.data) {
-            //     logout();
-            //     return;
-            // }
-            // const userFormat = handleFormatProfileInfoHelper(userProfile.data);
-            // setUser(userFormat);
-        } catch (error) {
-            console.log('@getSessionUser Error: ', error);
-            logout();
         } finally {
             setLoading(false);
         }
@@ -89,10 +73,6 @@ export const AuthContextProvider = ({ children }: UserProviderProps) => {
     useEffect(() => {
         getSessionUserFromStorage();
     }, []);
-
-    useEffect(() => {
-        getSessionUser();
-    }, [session]);
 
     const logout = async () => {
         await clearSecretStorage();

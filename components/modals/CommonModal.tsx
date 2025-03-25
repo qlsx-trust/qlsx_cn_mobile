@@ -65,7 +65,7 @@ export const styling = () =>
         },
         modal: {
             padding: 16,
-            maxWidth: Dimensions.get('window').width * 2/3,
+            maxWidth: Dimensions.get('window').width * 4/5,
         },
     });
 
