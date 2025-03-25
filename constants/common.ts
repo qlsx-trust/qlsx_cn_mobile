@@ -4,7 +4,6 @@ export const KEY_AUTH_TOKEN = 'Basic-TK';
 export const KEY_CAMERA_FLASH_MODE = 'Camera-flash-mode';
 export const KEY_REQUEST_CAMERA_PERMISSION = 'request-camera-permission';
 
-
 export const ZOOM_SELECTS = [1, 1.5, 2];
 
 export const ZOOM_CONFIG: any = {
@@ -12,7 +11,6 @@ export const ZOOM_CONFIG: any = {
     '1.5': 0.1,
     '2': 0.2,
 };
-
 
 export enum OS {
     ANDROID = 'android',
@@ -25,6 +23,7 @@ export const ACCESS_CAMERA = {
 };
 
 export const SCREEN_KEY = {
+    login: 'login',
     home: 'home',
 };
 
@@ -53,3 +52,12 @@ export const BUTTON_LOADING_ICON_COLOR = {
     [BUTTON_COMMON_TYPE.CANCEL_WITH_CHILDREN]: '#333',
     [BUTTON_COMMON_TYPE.DELETE_WITH_CHILDREN]: '#fff',
 };
+
+export enum UserRole {
+    Admin,
+    QC,
+    Employee,
+    Manager,
+    MaterialSupply,
+    MoldSupply,
+}
