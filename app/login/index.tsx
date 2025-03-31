@@ -66,6 +66,7 @@ const IntroScreen: React.FC<IntroScreenProps> = () => {
     const handleLogin = async () => {
         if (!username || !password || loadingSubmit) return;
         try {
+            Keyboard.dismiss();
             setLoadingSubmit(true);
             const payload = {
                 userName: username,
@@ -88,7 +89,7 @@ const IntroScreen: React.FC<IntroScreenProps> = () => {
 
             setSession(userData);
             await setSecretStorage(userData);
-            Keyboard.dismiss();
+           
 
             toast.success('Đăng nhập thành công!');
             router.replace(SCREEN_KEY.home);

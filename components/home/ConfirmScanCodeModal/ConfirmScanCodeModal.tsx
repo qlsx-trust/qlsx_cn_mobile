@@ -29,37 +29,41 @@ const ConfirmScanCodeModal = ({ scanResult, modalProps }: IConfirmScanCodeModalP
     const styles = styling(themeVariables);
     const { session: userData } = useAuthContext();
 
-    const [materialCode, setMaterialCode] = useState<string>('');
+    const [machineCode, setMachineCode] = useState<string>('');
     const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
     const handleConfirmCode = async () => {
         try {
+            Keyboard.dismiss();
             setIsLoadingSubmit(true);
             const payloadMold = {
-                confirmationTime: new Date(),
-                moldCode: materialCode,
-                machineCode: scanResult,
+                confirmationTime: `2025-03-25T16:55:56.866`,
+                moldCode: scanResult,
+                machineCode: machineCode,
                 employeeCode: userData?.userName,
                 notes: '',
             };
 
             const payloadMaterialDrying = {
-                confirmationTime: new Date(),
-                materialCode: materialCode,
-                machineCode: scanResult,
+                confirmationTime: `2025-03-25T16:55:56.866`,
+                materialCode: scanResult,
+                machineCode: machineCode,
                 employeeCode: userData?.userName,
                 notes: '',
             };
+
+            console.log('@@payloadMold: ', payloadMold);
 
             const response =
                 userData?.role == UserRole.MoldSupply
                     ? await CommonRepository.confirmMold(payloadMold)
                     : await CommonRepository.confirmMaterialDrying(payloadMaterialDrying);
+            console.log(response.error)
             if (response.error) {
                 toast.error('Xác nhận thất bại');
+                return;
             }
 
-            Keyboard.dismiss();
             modalProps.onClose();
             toast.success('Xác nhận thành công!');
         } catch (error) {
@@ -115,7 +119,7 @@ const ConfirmScanCodeModal = ({ scanResult, modalProps }: IConfirmScanCodeModalP
                 </TextWrap>
 
                 <TextWrap h3 style={styles.title} color={themeVariables.colors.textDefault}>
-                    Mã máy:{' '}
+                    {userData?.role == UserRole.MaterialSupply ? 'Mã nguyên liệu' : 'Mã khuôn'}:{' '}
                     <TextWrap color={themeVariables.colors.primary}> {scanResult} </TextWrap>
                 </TextWrap>
 
@@ -126,9 +130,7 @@ const ConfirmScanCodeModal = ({ scanResult, modalProps }: IConfirmScanCodeModalP
                     justifyContent="flex-start"
                     alignItems="flex-start"
                 >
-                    <TextWrap h3>
-                        {userData?.role == UserRole.MoldSupply ? 'Mã nguyên liệu' : 'Mã khuôn'}:
-                    </TextWrap>
+                    <TextWrap h3>Mã máy:</TextWrap>
                     <TextInput
                         style={[
                             styles.noteTitle,
@@ -138,12 +140,10 @@ const ConfirmScanCodeModal = ({ scanResult, modalProps }: IConfirmScanCodeModalP
                                 width: '100%',
                             },
                         ]}
-                        value={materialCode}
-                        onChangeText={setMaterialCode}
+                        value={machineCode}
+                        onChangeText={setMachineCode}
                         placeholderTextColor={themeVariables.colors.bgGrey}
-                        placeholder={
-                            userData?.role == UserRole.MoldSupply ? 'Mã nguyên liệu' : 'Mã khuôn'
-                        }
+                        placeholder={'Mã máy'}
                         onBlur={Keyboard.dismiss}
                         onEndEditing={Keyboard.dismiss}
                         onSubmitEditing={Keyboard.dismiss}
@@ -158,7 +158,7 @@ const ConfirmScanCodeModal = ({ scanResult, modalProps }: IConfirmScanCodeModalP
                         onPress={modalProps.onClose}
                     />
                     <AppButton
-                        disabled={!materialCode || isLoadingSubmit}
+                        disabled={!machineCode || isLoadingSubmit}
                         isLoading={isLoadingSubmit}
                         viewStyle={styles.button}
                         label="Xác nhận"
